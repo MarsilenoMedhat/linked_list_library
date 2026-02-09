@@ -14,6 +14,7 @@ private:
     _Node* _Head;
     _Node* _Tail;
     _Node* _Current;
+    int _Count = 0;
 
     // Optimized search assuming temporal locality.
     // Average case improves when recently accessed nodes are reused.
@@ -67,27 +68,32 @@ private:
     }
     
     // return current value if it's not empty.
-    std::optional<T> getCurrent() {
+    std::optional<T> getCurrent() const {
         if (_Current == nullptr) {
-            return nullptr;
+            return std::nullopt;
         }
         return _Current->_Value;
     }
     
     // return head value if it's not empty.
-    std::optional<T> getHead() {
+    std::optional<T> getHead() const {
         if (_Head == nullptr) {
-            return nullptr;
+            return std::nullopt;
         }
         return _Head->_Value;
     }
     
     // return tail value if it's not empty.
-    std::optional<T> getTail() {
+    std::optional<T> getTail() const {
         if (_Tail == nullptr) {
-            return nullptr;
+            return std::nullopt;
         }
         return _Tail->_Value;
+    }
+
+    // return the number of nodes in the list.
+    int getSize () const {
+        return _Count;
     }
     
     // check the existance of node by the value.
@@ -116,11 +122,13 @@ private:
             _Head = newNode;
             _Tail = newNode;
             _Current = newNode;
+            _Count++;
             return true;
         }
         
         newNode->_Next = _Head;
         _Head = newNode;
+        _Count++;
         return true;
     }
 
@@ -136,11 +144,13 @@ private:
             _Head = newNode;
             _Tail = newNode;
             _Current = newNode;
+            _Count++;
             return true;
         }
 
         _Tail->_Next = newNode;
         _Tail = newNode;
+        _Count++;
         return true;
     }
 
@@ -157,11 +167,12 @@ private:
         if (tempNode == _Tail) {
             insertAtTheEnd(newVal);
         }
-
+        
         _Node* newNode = new _Node;
         newNode->_Value = newVal;
         newNode->_Next = tempNode->_Next;
         tempNode->_Next = newNode;
+        _Count++;
         return true;
     }
 
@@ -179,6 +190,7 @@ private:
             _Head = nullptr;
             _Current = nullptr;
             _Tail = nullptr;
+            _Count--;
             return true;
         }
 
@@ -190,6 +202,7 @@ private:
         _Node* tempNode = _Head;
         _Head = _Head->_Next;
         delete tempNode;
+        _Count--;
         return true;
     }
 
@@ -207,6 +220,7 @@ private:
             _Head = nullptr;
             _Current = nullptr;
             _Tail = nullptr;
+            _Count--;
             return true;
         }
         
@@ -222,6 +236,7 @@ private:
         delete tempCurrent->_Next;
         tempCurrent->_Next = nullptr;
         _Tail = tempCurrent;
+        _Count--;
         return true;
     }
 
@@ -263,6 +278,7 @@ private:
 
         PreNode->_Next = tempDeleteNode->_Next;
         delete tempDeleteNode;
+        _Count--;
         return true;
     }
 
@@ -277,6 +293,7 @@ private:
         _Head = nullptr;
         _Current = nullptr;
         _Tail = nullptr;
+        _Count = 0;
     }
 
     // print the full list.
