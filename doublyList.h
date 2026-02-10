@@ -123,13 +123,12 @@ public:
             _Head = newNode;
             _Tail = newNode;
             _Current = newNode;
-            _Count++;
-            return true;
         }
-
-        newNode->Next = _Head;
-        _Head->_Previous = newNode;
-        _Head = newNode;
+        else {
+            newNode->Next = _Head;
+            _Head->_Previous = newNode;
+            _Head = newNode;
+        }
         _Count++;
         return true;
     }
@@ -146,13 +145,12 @@ public:
             _Head = newNode;
             _Tail = newNode;
             _Current = newNode;
-            _Count++;
-            return true;
         }
-
-        newNode->_Previous = _Tail;
-        _Tail->_Next = newNode;
-        _Tail = newNode;
+        else {
+            newNode->_Previous = _Tail;
+            _Tail->_Next = newNode;
+            _Tail = newNode;
+        }
         _Count++;
         return true;
     }
@@ -179,13 +177,13 @@ public:
         // check if the previos node is the last node in the list or not.
         if (previousNode->Next == nullptr) {
             insertAtEnd(newVal);
-            _Count++;
-            return true;
+        } 
+        else {
+            newNode->Next = previousNode->Next;
+            newNode->Previous = previousNode;
+            previousNode->Next->Previous = newNode;
+            previousNode->Next = newNode;
         }
-        newNode->Next = previousNode->Next;
-        newNode->Previous = previousNode;
-        previousNode->Next->Previous = newNode;
-        previousNode->Next = newNode;
         _Count++;
         return true;
     }
@@ -204,13 +202,15 @@ public:
             _Head = nullptr;
             _Tail = nullptr;
             _Current = nullptr;
-            _Count--;
-            return true;
         }
-
-        _Head = _Head->_Next;
-        delete _Head->_Previous;
-        _Head->_Previous = nullptr;
+        else {
+            if (_Current == _Head) {
+                _Current = _Current->_Next;
+            }
+            _Head = _Head->_Next;
+            delete _Head->_Previous;
+            _Head->_Previous = nullptr;
+        }
         _Count--;
         return true;
     }
@@ -229,13 +229,15 @@ public:
             _Head = nullptr;
             _Tail = nullptr;
             _Current = nullptr;
-            _Count--;
-            return true;
         }
-
-        _Tail = _Tail->_Previous;
-        delete _Tail->_Next;
-        _Tail->_Next = nullptr;
+        else {
+            if (_Current == _Tail) {
+                _Current = _Current->_Previous;
+            }
+            _Tail = _Tail->_Previous;
+            delete _Tail->_Next;
+            _Tail->_Next = nullptr;
+        }
         _Count--;
         return true;
     }

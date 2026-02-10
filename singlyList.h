@@ -59,6 +59,7 @@ private:
         _Current = newNode;
         _Head = newNode;
         _Tail = newNode;
+        _Count++;
     }
     
     singlyList() {
@@ -122,12 +123,11 @@ private:
             _Head = newNode;
             _Tail = newNode;
             _Current = newNode;
-            _Count++;
-            return true;
         }
-        
-        newNode->_Next = _Head;
-        _Head = newNode;
+        else {
+            newNode->_Next = _Head;
+            _Head = newNode;
+        }
         _Count++;
         return true;
     }
@@ -144,18 +144,23 @@ private:
             _Head = newNode;
             _Tail = newNode;
             _Current = newNode;
-            _Count++;
-            return true;
         }
-
-        _Tail->_Next = newNode;
-        _Tail = newNode;
+        else {
+            _Tail->_Next = newNode;
+            _Tail = newNode;
+        }
         _Count++;
         return true;
     }
 
-    // insert after a spesific node by check the previous node by value.
+    // insert after a specific node by check the previous node by value.
     bool insertAfter(T preVal, T newVal) {
+
+        // check if the list id empty or not.
+        if (_Head == nullptr) {
+            return false;
+        }
+
         _Node* tempNode = _FindNode(preVal);
 
         // check if the previous not is exists or not
@@ -165,7 +170,7 @@ private:
 
         // check if the previous node is the last one or not.
         if (tempNode == _Tail) {
-            insertAtTheEnd(newVal);
+            return insertAtTheEnd(newVal);
         }
         
         _Node* newNode = new _Node;
