@@ -61,6 +61,8 @@ public:
         }
         return _Current->_Value;
     }
+
+    
     
     // return head value if it's not empty.
     std::optional<T> getHead() const {
